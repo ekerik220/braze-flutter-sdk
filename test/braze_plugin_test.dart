@@ -237,6 +237,21 @@ void main() {
     ]);
   });
 
+  test('should call displayInAppMessage', () {
+    BrazePlugin _braze = new BrazePlugin();
+    String _data = '{"someJson":"data"}';
+    BrazeInAppMessage _inAppMessage = new BrazeInAppMessage(_data);
+    _braze.displayInAppMessage(_inAppMessage);
+    expect(log, <Matcher>[
+      isMethodCall(
+        'displayInAppMessage',
+        arguments: <String, dynamic>{
+          'inAppMessageString': _inAppMessage.inAppMessageJsonString,
+        },
+      ),
+    ]);
+  });
+
   test('should call getDeviceId', () async {
     BrazePlugin _braze = new BrazePlugin();
     final result = await _braze.getDeviceId();

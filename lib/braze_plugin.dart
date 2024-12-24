@@ -202,6 +202,14 @@ class BrazePlugin {
     _channel.invokeMethod('logInAppMessageButtonClicked', params);
   }
 
+  /// Displays the provided in-app message data.
+  void displayInAppMessage(BrazeInAppMessage inAppMessage) {
+    final Map<String, dynamic> params = <String, dynamic>{
+      "inAppMessageString": inAppMessage.inAppMessageJsonString,
+    };
+    _channel.invokeMethod('displayInAppMessage', params);
+  }
+
   /// Dismisses the currently displayed in-app message.
   void hideCurrentInAppMessage() {
     _channel.invokeMethod('hideCurrentInAppMessage');

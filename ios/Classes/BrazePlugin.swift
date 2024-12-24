@@ -170,6 +170,30 @@ public class BrazePlugin: NSObject, FlutterPlugin, BrazeSDKAuthDelegate {
         inAppMessage.logClick(buttonId: idNumber.stringValue, using: braze)
       }
 
+    case "displayInAppMessage":
+      guard let args = call.arguments as? [String: Any],
+        let inAppMessageJSONString = args["inAppMessageString"] as? String,
+        let braze = BrazePlugin.braze
+      else {
+        print(
+          "Invalid args: \(argsDescription), braze: \(String(describing: braze)), iOS method: \(call.method)"
+        )
+        return
+      }
+      if let inAppMessagePresenter = BrazePlugin.braze?.inAppMessagePresenter
+        as? BrazeInAppMessageUI
+      {
+        if let inAppMessage = BrazePlugin.inAppMessage(from: inAppMessageJSONString, braze: braze) {
+          DispatchQueue.main.async {
+            inAppMessagePresenter.present(message: customInAppMessage)
+          }
+        }
+      } else {
+        print(
+          "Invalid: In-app message presenter not available or not of type BrazeInAppMessageUI, iOS method: \(call.method)"
+        )
+      }
+
     case "hideCurrentInAppMessage":
       if let inAppMessagePresenter = BrazePlugin.braze?.inAppMessagePresenter
         as? BrazeInAppMessageUI

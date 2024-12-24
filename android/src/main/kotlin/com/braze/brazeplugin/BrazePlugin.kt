@@ -185,6 +185,16 @@ class BrazePlugin : MethodCallHandler, FlutterPlugin, ActivityAware {
                         }
                     }
                 }
+                "displayInAppMessage" -> {
+                    val inAppMessageString = call.argument<String>("inAppMessageString")
+                    if (inAppMessageString == null) {
+                        brazelog(W) { "Unexpected null parameter(s) in `displayInAppMessage`." }
+                        return
+                    }
+                    val inAppMessage = Braze.getInstance(context)
+                        .deserializeInAppMessageString(inAppMessageString)
+                    BrazeInAppMessageManager.getInstance().addInAppMessage(inAppMessage)
+                }
                 "hideCurrentInAppMessage" -> {
                     BrazeInAppMessageManager.getInstance().hideCurrentlyDisplayingInAppMessage(true)
                 }
