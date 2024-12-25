@@ -36,6 +36,8 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.math.BigDecimal
 import java.util.*
+import android.os.Handler
+import android.os.Looper
 
 class BrazePlugin : MethodCallHandler, FlutterPlugin, ActivityAware {
 
@@ -193,7 +195,10 @@ class BrazePlugin : MethodCallHandler, FlutterPlugin, ActivityAware {
                     }
                     val inAppMessage = Braze.getInstance(context)
                         .deserializeInAppMessageString(inAppMessageString)
-                    BrazeInAppMessageManager.getInstance().addInAppMessage(inAppMessage)
+
+                    Handler(Looper.getMainLooper()).post {
+                        BrazeInAppMessageManager.getInstance().addInAppMessage(inAppMessage)
+                    }
                 }
                 "hideCurrentInAppMessage" -> {
                     BrazeInAppMessageManager.getInstance().hideCurrentlyDisplayingInAppMessage(true)
