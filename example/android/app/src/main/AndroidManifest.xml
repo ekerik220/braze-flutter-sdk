@@ -51,7 +51,7 @@
     <service
         android:name="com.braze.push.BrazeFirebaseMessagingService"
         android:exported="false">
-      <intent-filter>
+      <intent-filter android:priority="999">
         <action android:name="com.google.firebase.MESSAGING_EVENT" />
       </intent-filter>
     </service>
